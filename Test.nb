@@ -1,0 +1,132 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4436,        123]
+NotebookOptionsPosition[      3961,        101]
+NotebookOutlinePosition[      4319,        117]
+CellTagsIndexPosition[      4276,        114]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "Alpha", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"alphaForOm", "[", 
+   RowBox[{"6", ",", "9.4"}], "]"}], "  ", "//", " ", 
+  "AbsoluteTiming"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"lastStep", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"4.542302853672793`", "\[VeryThinSpace]", "-", 
+       RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+      RowBox[{"4.542302853672793`", "\[VeryThinSpace]", "+", 
+       RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+      "2.9273152529036643`", ",", "5.398337783360554`", ",", 
+      RowBox[{
+       RowBox[{"-", "4.542302853672793`"}], "+", 
+       RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+      RowBox[{
+       RowBox[{"-", "4.542302853672793`"}], "-", 
+       RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+      RowBox[{"-", "2.9273152529036643`"}], ",", 
+      RowBox[{"-", "5.398337783360554`"}]}], "}"}], ",", "6", ",", "9.4"}], 
+   "]"}], " ", "//", " ", "AbsoluteTiming"}]}], "Input",
+ CellChangeTimes->{{3.566747114963772*^9, 3.566747136417419*^9}, {
+   3.566747187922666*^9, 3.56674719940976*^9}, {3.566748277014204*^9, 
+   3.5667482860371647`*^9}, 3.566749620726025*^9, {3.566749655941964*^9, 
+   3.566749693869767*^9}, {3.566749845430691*^9, 3.566749900755425*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Prepare constants\"\>"], "Print",
+ CellChangeTimes->{
+  3.566748287542582*^9, 3.5667483485673523`*^9, 3.566748395747691*^9, 
+   3.566749562044197*^9, {3.566749607372943*^9, 3.566749696418455*^9}, {
+   3.566749827042094*^9, 3.566749892238553*^9}}],
+
+Cell[BoxData["\<\"Calculating Sigma\"\>"], "Print",
+ CellChangeTimes->{
+  3.566748287542582*^9, 3.5667483485673523`*^9, 3.566748395747691*^9, 
+   3.566749562044197*^9, {3.566749607372943*^9, 3.566749696418455*^9}, {
+   3.566749827042094*^9, 3.566749892240274*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.01182500000000000044131365228849972482`4.093401062689473", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"4.542302853672793`", "\[VeryThinSpace]", "-", 
+      RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+     RowBox[{"4.542302853672793`", "\[VeryThinSpace]", "+", 
+      RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+     "2.9273152529036643`", ",", "5.398337783360554`", ",", 
+     RowBox[{
+      RowBox[{"-", "4.542302853672793`"}], "+", 
+      RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+     RowBox[{
+      RowBox[{"-", "4.542302853672793`"}], "-", 
+      RowBox[{"3.4890817737563915`", " ", "\[ImaginaryI]"}]}], ",", 
+     RowBox[{"-", "2.9273152529036643`"}], ",", 
+     RowBox[{"-", "5.398337783360554`"}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.566748287545089*^9, 3.566748348571169*^9, 3.566748395749991*^9, 
+   3.566749562046444*^9, {3.566749607426422*^9, 3.566749696421258*^9}, {
+   3.566749827046022*^9, 3.566749892242429*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "3.8749548486455743`*^21"}], "-", 
+  RowBox[{"7.836555651544134`*^20", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{
+  3.566748287545089*^9, 3.566748348571169*^9, 3.566748395749991*^9, 
+   3.566749562046444*^9, {3.566749607426422*^9, 3.566749696421258*^9}, {
+   3.566749827046022*^9, 3.566749892267008*^9}}]
+}, Open  ]]
+},
+WindowSize->{740, 652},
+WindowMargins->{{270, Automatic}, {Automatic, 50}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1383, 29, 131, "Input"],
+Cell[CellGroupData[{
+Cell[1987, 55, 264, 4, 22, "Print"],
+Cell[2254, 61, 264, 4, 22, "Print"]
+}, Open  ]],
+Cell[2533, 68, 1052, 21, 46, "Output"],
+Cell[3588, 91, 357, 7, 32, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
