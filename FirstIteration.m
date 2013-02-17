@@ -1,35 +1,18 @@
-alphaForOm = Function[{ k, \[CapitalOmega]}, Block[
-	{
-		Alpha, L, A, U, dU, ddU, dFi, deriv, exponenta, x, precision, om, t,
-		x1, x2, x3, n2, n3, al, z, A1, A2, A3, B1, u11, u12, u13, u21, u22, u23, u31, u32, u33,
-		u1tt, u2tt, u3tt, fi1, fi2, fi3, B,
-		  Sigma, dSigma, sdSigma, Edge, Ldet, Lcoeff, Di, dDi, ones, sdDi, b,
+(* ::Package:: *)
+
+buildSigmas = Function[{U, Fi, x, t}, Block[{
+			  Sigma, dSigma, sdSigma, Edge, Ldet, Lcoeff, Di, dDi, ones, sdDi, b,
 		  c11, c33, c44, c12, c13, c14, e15, e22, e31, e33,es11, es33,
+		  u11, u12, u13, u21, u22, u23, u31, u32, u33,
+			u1tt, u2tt, u3tt, fi1, fi2, fi3,		  
 s11lin, s12lin, s13lin,
 s21lin, s22lin, s23lin ,
 s31lin, s32lin, s33lin,
 di1lin, di2lin, di3lin,
-sigmas, LXdet, LXSolution, rSol
-	},
-    n3 = Sqrt[1/2];
-	n2 = Sqrt[1/2];
-		
-	(* Local settings *)
-	precision = 7;
-	
-	(*-----linear task - search alfa----*)
-	deriv = Exp[-I * (om * t - k1 * (n2 * x2 + n3 * x3))];
-	exponenta = Exp[al x1] * deriv;
-	x = { x1, x2, x3 };
-	
-	A = { A1, A2, A3 };
-	B = { B1 };
-	
-	U = A * exponenta;	
+sigmas, dU, dFi, ddU },
+		dU = D[U, { x }];	
 
-	dU = D[U, { x }];	
-
-	dFi = D[B1 * exponenta, { x }];
+	dFi = D[Fi, { x }];
 	ddU = D[U[[1;;3]], {t, 2}];
 	
 	u11 = dU[[1,1]];
@@ -84,27 +67,59 @@ sigmas, LXdet, LXSolution, rSol
 	};
 		
 	Di = { di1lin, di2lin, di3lin };
-	
+
 	dSigma = Transpose[{
-	    D[Sigma[[All, 1]], x1],
-	    D[Sigma[[All, 2]], x2], 
-	    D[Sigma[[All, 3]], x3]
+	    D[Sigma[[All, 1]], x[[1]]],
+	    D[Sigma[[All, 2]], x[[2]]], 
+	    D[Sigma[[All, 3]], x[[3]]]
 	}];
-	
+
 	ones = Table[1, {3}];
 	sdSigma = dSigma . ones;
 	dDi = {
-	    D[Di[[1]], x1],
-	    D[Di[[2]], x2],    
-	    D[Di[[3]], x3]
+	    D[Di[[1]], x[[1]]],
+	    D[Di[[2]], x[[2]]],    
+	    D[Di[[3]], x[[3]]]
 	};
-	sdDi = dDi . ones;
-	sigmas = Append[(\[Rho] * ddU - sdSigma), sdDi];
 	
-	(*TODO: Remove replace statement; Extract to function*)
+
+	sdDi = dDi . ones;
+	Append[(\[Rho] * ddU - sdSigma), sdDi]
+]];
+
+findAlpha = Function[{ k, \[CapitalOmega]}, Block[{
+		Alpha, L, A, U, Fi, deriv, exponenta, x, precision, om, t,
+		x1, x2, x3, n2, n3, al, z, A1, A2, A3, B1,
+		 B, sigmas, LXdet, LXSolution, rSol
+	},
+	If[ArrayQ[k], Print[k]];
+
+    n3 = Sqrt[1/2];
+	n2 = Sqrt[1/2];
+		
+	(* Local settings *)
+	precision = 7;
+	
+	(*-----linear task - search alfa----*)
+	deriv = Exp[-I * (om * t - k * (n2 * x2 + n3 * x3))];
+	exponenta = Exp[al x1] * deriv;
+
+	x = { x1, x2, x3 };
+	
+	
+	
+	A = { A1, A2, A3 };
+	B = { B1 };
+	
+	U = A * exponenta;
+	Fi = B1 * exponenta;	
+
+	sigmas = buildSigmas[U, Fi, x, t]; 	
+	
 	L = sigmas /. exponenta -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega];
 	
 	{b, Lcoeff} = CoefficientArrays[L, {A1, A2, A3, B1}];
+
 	Ldet = Det[Lcoeff];
 	
 	(*Use canoncial form*)
@@ -112,7 +127,8 @@ sigmas, LXdet, LXSolution, rSol
 	    { al, al ^ 2 , al ^ 3, al ^ 4, al ^ 5, al ^ 6, al ^ 7, al ^ 8 }
 	] /. al ^ 2 -> z /. al ^ 4 -> z ^ 2 /. al ^ 6 -> z ^ 3 /. al ^ 8 -> z ^ 4;
 (*	Print[LXdet];
-*)	LXSolution = Solve[LXdet == 0, z];
+*)
+	LXSolution = Solve[LXdet == 0, z];
 	
 	(* Result for I part *)
 	rSol = Sqrt[z /. LXSolution];
