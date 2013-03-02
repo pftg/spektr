@@ -1,10 +1,10 @@
 (* ::Package:: *)
-
 dispersion = Function[{k, om}, Block[{Alpha},
-	(*Print["Calculating first alpha ..."];
-	*)
-	Alpha = findAlpha[k, om];
+(*	PrintTemporary["Calculating first alpha ..."];	
+	PrintTemporary[k];	
+	PrintTemporary[om];	
+*)	Alpha = findAlpha[k, om];
 	(*Print[MatrixForm[Alpha]]*);
 	(*Print["Calculating remain alphas ..."]*);
-	lastStep[Alpha, k, om]
+	findCoeffsAndDet[Alpha, k, om]
  ]];
