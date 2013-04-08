@@ -1,8 +1,9 @@
 (* ::Package:: *)
 
-
 (* ::Section:: *)
-(* Region Title *)
+(* Region Title Find Coeffs*)
+
+
 findCoeffsAndDet = Function[{Alpha, k, \[CapitalOmega]}, Block[ {
     
     L, A, B, Fi, U, dU, ddU, dFi, deriv, ex, x, precision = 2, om, t,
@@ -29,7 +30,7 @@ di1lin, di2lin, di3lin},
 	
 	 (*-----linear task - search alfa----*)
 	 deriv = Exp[-I * ( om * t - k * (n2*x2 + n3*x3))];
-	 ex = (Exp[Alpha * x1]);
+	 ex = Exp[Alpha * x1];
 
 	 x = { x1, x2, x3 };
 	 
@@ -49,64 +50,88 @@ di1lin, di2lin, di3lin},
 	 
 	 B = {A41, A42, A43, A44, A45, A46, A47, A48};
 
-
     U = A . ex * deriv;
     Fi = B . ex * deriv;
-
+		
     sigmas = buildSigmas[U, Fi, x, t];
 
 	L = sigmas /.  deriv -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega];
-
-(*	Print["Solving Matrix coeffs: "];
+(*Print["L="];
+Print[MatrixForm[SetPrecision[L,2]]];
 *)
-	conv = Function[{exp, alpha, vars}, Block[ {res, coeff, ealx1},
+	
+conv = Function[{exp, alpha, vars}, Block[ {res, coeff, ealx1},
+		PrintTemporary[vars];
 	     {res, coeff} = CoefficientArrays[exp /. Exp[alpha * x1] -> ealx1, ealx1];
-	     Solve[{coeff[[1,1]] == 0, coeff[[2,1]] == 0, coeff[[3,1]] == 0}, vars]
+	     sol = Solve[{coeff[[1,1]] == 0, coeff[[2,1]] == 0, coeff[[3,1]] == 0}, vars];
+         sol[[1]]
 	 ]];
-	
-	 S = conv[L, Alpha[[1]], {A11, A21, A31}];
-	 A11 = A11 /. S[[1]];
-	 A21 = A21 /. S[[1]];
-	 A31 = A31 /. S[[1]];
-	 S = conv[L, Alpha[[2]], {A12, A22, A32}];
-	 A12 = A12/.S[[1]];
-	 A22 = A22/.S[[1]];
-	 A32 = A32/.S[[1]];
-	 S = conv[L, Alpha[[3]], {A13, A23, A33}];
-	 A13 = A13/.S[[1]];
-	 A23 = A23/.S[[1]];
-	 A33 = A33/.S[[1]];
-	 S = conv[L, Alpha[[4]], {A14, A24, A34}];
-	 A14 = A14/.S[[1]];
-	 A24 = A24/.S[[1]];
-	 A34 = A34/.S[[1]];
-	 S = conv[L, Alpha[[5]], {A15, A25, A35}];
-	 A15 = A15/.S[[1]];
-	 A25 = A25/.S[[1]];
-	 A35 = A35/.S[[1]];
-	 S = conv[L, Alpha[[6]], {A16, A26, A36}];
-	 A12 = A12/.S[[1]];
-	 A22 = A22/.S[[1]];
-	 A32 = A32/.S[[1]];
-	 S = conv[L, Alpha[[7]], {A17, A27, A37}];
-	 A17 = A17/.S[[1]];
-	 A27 = A27/.S[[1]];
-	 A37 = A37/.S[[1]];
-	 S = conv[L, Alpha[[8]], {A18, A28, A38}];
-	 A18 = A18/.S[[1]];
-	 A28 = A28/.S[[1]];
-	 A38 = A38/.S[[1]];
-	
-	                                       (*----------Search k and coefficients from boundary conditions-------*)
-(*	 Print["Calculating edge ..."];                                      
-*)	 Edge = U /. deriv -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega];
-	 Edge = Append[Edge, Fi /. deriv -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega]];
-	 Edge = Join[Edge /. x1 -> h, Edge /. x1 -> -h];
-	 {b, Lcoeff} = CoefficientArrays[Edge, {A41, A42, A43, A44, A45, A46, A47, A48}];
 	 
+	S = conv[L, Alpha[[1]], {A11, A21, A31}];
+
+	 A11 = A11 /. S;
+	 A21 = A21 /. S;
+	 A31 = A31 /. S;
+
+	 
+	 S = conv[L, Alpha[[2]], {A12, A22, A32}];
+
+	 A12 = A12/. S;
+	 A22 = A22/. S;
+	 A32 = A32/. S;
+
+	 S = conv[L, Alpha[[3]], {A13, A23, A33}];
+	 A13 = A13/.S;
+	 A23 = A23/.S;
+	 A33 = A33/.S;
+	 S = conv[L, Alpha[[4]], {A14, A24, A34}];
+	 A14 = A14/.S;
+	 A24 = A24/.S;
+	 A34 = A34/.S;
+	 S = conv[L, Alpha[[5]], {A15, A25, A35}];
+	 A15 = A15/.S;
+	 A25 = A25/.S;
+	 A35 = A35/.S;
+	 S = conv[L, Alpha[[6]], {A16, A26, A36}];
+	 A16 = A16/.S;
+	 A26 = A26/.S;
+	 A36 = A36/.S;
+	 
+	S = conv[L, Alpha[[7]], {A17, A27, A37}];
+	 A17 = A17/.S;
+	 A27 = A27/.S;
+	 A37 = A37/.S;
+
+	 S = conv[L, Alpha[[8]], {A18, A28, A38}];
+	 A18 = A18/.S;
+	 A28 = A28/.S;
+	 A38 = A38/.S;
+
+(*Print["A="];
+Print[MatrixForm[SetPrecision[A[[1,1]],2]]];
+Abort[];
+*)	
+	                                       (*----------Search k and coefficients from boundary conditions-------*)
+	 PrintTemporary["Calculating edge ..."];                                      
+
+	 Edge = Append[U, Fi];
+	 Edge = Join[Edge /. x1 -> h, Edge /. x1 -> -h] /. deriv -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega];
+	 {b, Lcoeff} = CoefficientArrays[Edge, {A41, A42, A43, A44, A45, A46, A47, A48}];
+
+(*Print[MatrixForm[Lcoeff]];
+*)	 
 (*	 Print["Calculating det of edge ..."];
 *)
-Ldet = Det[SetPrecision[Lcoeff,10]]
+(*Ldet = Det[SetPrecision[Lcoeff,10]]*)
+(*Print["Coef="];
+coeff = Coefficient[Edge, A41][[1]];
+Print[Chop[SetPrecision[coeff,1],1]];
+*)(*Print["Coef="];
+coeff = Coefficient[Edge, A41][[2]];
+Print[Chop[SetPrecision[coeff,1],1]];
+*)
+
+Simplify[Lcoeff]
 
 (*d = Det[Table[Subscript[a, i, j], {i, 1, 8}, {j, 1, 8}]];
 Do[d = d /. Subscript[a, i, j] ->  Lcoeff[[i, j]], {i, 1, 8}, {j, 1, 8}];

@@ -16,6 +16,7 @@ sigmas, dU, dFi, ddU },
 	ddU = D[U[[1;;3]], {t, 2}];
 	
 	u11 = dU[[1,1]];
+	
 	u12 = dU[[1,2]];
 	u13 = dU[[1,3]];
 	u21 = dU[[2,1]];
@@ -76,6 +77,7 @@ sigmas, dU, dFi, ddU },
 
 	ones = Table[1, {3}];
 	sdSigma = dSigma . ones;
+	
 	dDi = {
 	    D[Di[[1]], x[[1]]],
 	    D[Di[[2]], x[[2]]],    
@@ -87,11 +89,12 @@ sigmas, dU, dFi, ddU },
 	Append[(\[Rho] * ddU - sdSigma), sdDi]
 ]];
 
-findAlpha = Function[{ k, \[CapitalOmega]}, Block[{
+findAlpha = Function[{k, \[CapitalOmega]}, Block[{
 		Alpha, L, A, U, Fi, deriv, exponenta, x, precision, om, t,
 		x1, x2, x3, n2, n3, al, z, A1, A2, A3, B1,
-		 B, sigmas, LXdet, LXSolution, rSol
+		 B, sigmas, LXdet, LXSolution, rSol, Ldet, Lcoeff, b, \[Rho]
 	},
+
 	If[ArrayQ[k], Print[k]];
 
     n3 = Sqrt[1/2];
@@ -114,22 +117,32 @@ findAlpha = Function[{ k, \[CapitalOmega]}, Block[{
 	U = A * exponenta;
 	Fi = B1 * exponenta;	
 
-	sigmas = buildSigmas[U, Fi, x, t]; 	
+	sigmas = buildSigmas[U, Fi, x, t];
 	
 	L = sigmas /. exponenta -> 1 /. om ^ 2 \[Rho] -> \[CapitalOmega];
-	
+(*Print["L: "];
+Print[MatrixForm[SetPrecision[L,2]]];
+*)	
 	{b, Lcoeff} = CoefficientArrays[L, {A1, A2, A3, B1}];
-
+(*Print["Lcoeff: "];
+Print[MatrixForm[SetPrecision[Lcoeff,2]]];
+*)
 	Ldet = Det[Lcoeff];
-	
+(*Print["Ldet: "];
+Print[MatrixForm[SetPrecision[Ldet,2]]];
+*)	
 	(*Use canoncial form*)
 	LXdet = Collect[Ldet,
 	    { al, al ^ 2 , al ^ 3, al ^ 4, al ^ 5, al ^ 6, al ^ 7, al ^ 8 }
 	] /. al ^ 2 -> z /. al ^ 4 -> z ^ 2 /. al ^ 6 -> z ^ 3 /. al ^ 8 -> z ^ 4;
-(*	Print[LXdet];
+(*Print["LXdet: "];
+Print[MatrixForm[SetPrecision[LXdet,2]]];
 *)
+(* ,WorkingPrecision->precision *)
 	LXSolution = Solve[LXdet == 0, z];
-	
+(*Print["LXSolution: "];
+Print[MatrixForm[SetPrecision[LXSolution,2]]];
+*)	
 	(* Result for I part *)
 	rSol = Sqrt[z /. LXSolution];
 	Join[rSol, -rSol]
